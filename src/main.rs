@@ -1,7 +1,6 @@
 use winit::event;
 
 fn main() {
-    let event_loop = winit::event_loop::EventLoop::new().unwrap();
     let mut app = winit_ui::App::new("Hello, world!", 1280, 720, true, false);
 
     app.on_draw(|canvas| {
@@ -11,5 +10,5 @@ fn main() {
         canvas.draw_circle_f(600, 400, 75, &winit_ui::color::Color::new(255, 255, 0, 255));
     });
 
-    event_loop.run_app(&mut app).unwrap();
+    app.run();
 }
