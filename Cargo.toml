@@ -7,7 +7,7 @@ license = "MIT"
 categories = ["gui", "rendering"]
 keywords = ["ui", "window", "graphics", ]
 readme = "README.md"
-documentation = "docs.rs/winit-ui"
+documentation = "https://docs.rs/winit-ui"
 repository = "https://github.com/LordAfterEight/winit-ui"
 
 [dependencies]
