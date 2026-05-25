@@ -31,17 +31,9 @@ impl App {
         self
     }
 
-    pub fn run(self) {
+    pub fn run(mut self) {
         let event_loop = winit::event_loop::EventLoop::new().unwrap();
-        let mut handler = AppHandler {
-            title: self.title,
-            width: self.width,
-            height: self.height,
-            draw_fn: self.draw_fn,
-            window: self.window,
-            pixels: self.pixels,
-        };
-        event_loop.run_app(&mut handler).unwrap();
+        event_loop.run_app(&mut self).unwrap();
     }
 }
 
@@ -64,9 +56,10 @@ impl winit::application::ApplicationHandler for App {
 
         let surface_texture = pixels::SurfaceTexture::new(self.width, self.height, window.clone());
         let pixels = pixels::Pixels::new(self.width, self.height, surface_texture).unwrap();
-
+        
         self.pixels = Some(pixels);
         self.window = Some(window);
+        self.window.as_ref().unwrap().request_redraw();
     }
 
     fn window_event(
@@ -88,51 +81,11 @@ impl winit::application::ApplicationHandler for App {
                             draw_fn(&mut canvas);
                             pixels.render().unwrap();
                         }
+                        self.window.as_ref().unwrap().request_redraw();
                     }
                     _ => {}
                 }
             }
-        }
-    }
-}
-
-struct AppHandler {
-    title: String,
-    width: u32,
-    height: u32,
-    draw_fn: Option<Box<dyn FnMut(&mut canvas::Canvas)>>,
-    window: Option<std::sync::Arc<winit::window::Window>>,
-    pixels: Option<pixels::Pixels<'static>>,
-}
-
-impl winit::application::ApplicationHandler for AppHandler {
-    fn resumed(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
-        let window = std::sync::Arc::new(
-            event_loop.create_window(
-                winit::window::Window::default_attributes()
-                    .with_title(&self.title)
-                    .with_inner_size(winit::dpi::LogicalSize::new(self.width, self.height))
-            ).unwrap()
-        );
-
-        let surface_texture = pixels::SurfaceTexture::new(self.width, self.height, window.clone());
-        let pixels = pixels::Pixels::new(self.width, self.height, surface_texture).unwrap();
-
-        self.pixels = Some(pixels);
-        self.window = Some(window);
-    }
-
-    fn window_event(&mut self, event_loop: &winit::event_loop::ActiveEventLoop, _id: winit::window::WindowId, event: winit::event::WindowEvent) {
-        match event {
-            winit::event::WindowEvent::CloseRequested => event_loop.exit(),
-            winit::event::WindowEvent::RedrawRequested => {
-                if let (Some(pixels), Some(draw_fn)) = (self.pixels.as_mut(), self.draw_fn.as_mut()) {
-                    let mut canvas = canvas::Canvas::new(pixels.frame_mut(), self.width, self.height);
-                    draw_fn(&mut canvas);
-                    pixels.render().unwrap();
-                }
-            }
-            _ => {}
         }
     }
 }
