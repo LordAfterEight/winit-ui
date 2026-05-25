@@ -118,4 +118,27 @@ impl<'a> Canvas<'a> {
             }
         }
     }
+
+    pub fn draw_text(&mut self, mut x: u32, y: u32, size: f32, text: &str, font: &crate::font::Font, color: &crate::color::Color) {
+        for char in text.chars() {
+            if char.is_ascii() {
+                let (metrics, glyph) = font.rasterize(char, size);
+                for gx in 0..metrics.width {
+                    for gy in 0..metrics.height {
+                        let alpha = glyph[gy * metrics.width + gx];
+                        let blended_color = crate::color::Color {
+                            r: ((color.r as u16 * alpha as u16) / 255) as u8,
+                            g: ((color.g as u16 * alpha as u16) / 255) as u8,
+                            b: ((color.b as u16 * alpha as u16) / 255) as u8,
+                            a: alpha,
+                        };
+                        let px = (x as i32 + gx as i32 + metrics.xmin) as u32;
+                        let py = (y as i32 - metrics.height as i32 + gy as i32 - metrics.ymin) as u32;
+                        self.set_pixel(px, py, &blended_color);
+                    }
+                }
+                x += metrics.advance_width as u32;
+            }
+        }
+    }
 }

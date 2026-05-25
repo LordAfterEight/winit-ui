@@ -1,5 +1,6 @@
 mod canvas;
 pub mod color;
+pub mod font;
 
 pub struct App {
     window: Option<std::sync::Arc<winit::window::Window>>,
