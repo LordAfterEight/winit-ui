@@ -38,8 +38,8 @@ impl App {
             width: self.width,
             height: self.height,
             draw_fn: self.draw_fn,
-            window: None,
-            pixels: None,
+            window: self.window,
+            pixels: self.pixels,
         };
         event_loop.run_app(&mut handler).unwrap();
     }
