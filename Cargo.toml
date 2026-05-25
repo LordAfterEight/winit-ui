@@ -4,7 +4,11 @@ version = "0.1.0"
 edition = "2024"
 description = "A UI crate built around winit and pixels"
 license = "MIT"
-categories = ["GUI", "Rendering"]
+categories = ["gui", "rendering"]
+keywords = ["ui", "window", "graphics", ]
+readme = "README.md"
+documentation = "docs.rs/winit-ui"
+repository = "https://github.com/LordAfterEight/winit-ui"
 
 [dependencies]
 pixels = "0.17.1"
