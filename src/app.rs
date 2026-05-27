@@ -27,27 +27,27 @@ impl App {
         }
     }
 
-    pub fn set_fullscreen(&mut self, fullscreen: bool) -> &mut Self {
+    pub fn set_fullscreen(mut self, fullscreen: bool) -> Self {
         self.fullscreen = fullscreen;
         self
     }
 
-    pub fn set_resizable(&mut self, resizable: bool) -> &mut Self {
+    pub fn set_resizable(mut self, resizable: bool) -> Self {
         self.resizable = resizable;
         self
     }
 
-    pub fn set_title(&mut self, title: &str) -> &mut Self {
+    pub fn set_title(mut self, title: &str) -> Self {
         self.title = title.to_string();
         self
     }
 
-    pub fn keep_aspect_ratio(&mut self, keep: bool) -> &mut Self {
+    pub fn keep_aspect_ratio(mut self, keep: bool) -> Self {
         self.keep_aspect_ratio = keep;
         self
     }
 
-    pub fn on_draw(&mut self, f: impl FnMut(&mut crate::canvas::Canvas) + 'static) -> &mut Self {
+    pub fn on_draw(mut self, f: impl FnMut(&mut crate::canvas::Canvas) + 'static) -> Self {
         self.draw_fn = Some(Box::new(f));
         self
     }
