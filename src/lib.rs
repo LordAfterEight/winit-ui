@@ -1,4 +1,4 @@
-mod canvas;
+pub mod canvas;
 pub mod color;
 pub mod font;
 pub mod app;
