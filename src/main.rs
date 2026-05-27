@@ -1,7 +1,9 @@
 use winit::event;
 
 fn main() {
-    let mut app = winit_ui::App::new("Hello, world!", 1280, 720, true, false);
+    let mut app = winit_ui::App::new("Hello, world!", 1280, 720);
+    app.set_resizable(true);
+    app.keep_aspect_ratio(true);
 
     app.on_draw(|canvas| {
         canvas.draw_rect_f(100, 100, 200, 150, &winit_ui::color::Color::new(255, 0, 0, 255));
